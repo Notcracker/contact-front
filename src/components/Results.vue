@@ -19,11 +19,11 @@
     <br>
     <div class="col-sm-6 offset-sm-3">
       <ul class="list-group" v-for="form in filtered">
-        <li class="list-group-item list-group-item-info">{{form.name}}</li>
-        <li class="list-group-item">Email: {{form.email}}</li>
-        <li class="list-group-item">Phone: {{form.phone}}</li>
-        <li class="list-group-item">Birthday: {{form.birthday}}</li>
-        <li class="list-group-item">Gender: {{form.gender}}</li>
+        <li class="list-group-item list-group-item-info">{{form.Name}}</li>
+        <li class="list-group-item">Email: {{form.Email}}</li>
+        <li class="list-group-item">Phone: {{form.Phone}}</li>
+        <li class="list-group-item">Birthday: {{form.Birthday}}</li>
+        <li class="list-group-item">Gender: {{form.Gender}}</li>
       </ul>
     </div>
   </div>
@@ -49,6 +49,12 @@ export default {
   beforeCreate() {
     this.$http.get('http://localhost:63913/api/contact')
     .then(data => {
+
+      for (let form in data.body) {
+        let parsedForm = JSON.parse(data.body[form].jsonString)
+
+        data.body[form] = parsedForm;
+      }
       this.$data.forms = data.body;
       this.$data.filtered = data.body;
     }, err => {
@@ -61,7 +67,7 @@ export default {
       if (this.$data.filter.value !== "") {
 
         this.$data.filtered = this.$data.forms.filter( (form) => {
-          return form[this.$data.filter.field.toLowerCase()].match(this.$data.filter.value);
+          return form[this.$data.filter.field].match(this.$data.filter.value);
         })
       }
       else {

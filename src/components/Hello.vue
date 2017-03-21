@@ -84,7 +84,7 @@ export default {
     validateForm() {
       this.$validator.validateAll();
       if (!this.errors.any()) {
-            this.$http.post('http://localhost:63913/api/contact', this.$data.form, {
+            this.$http.post('http://localhost:63913/api/contact', { JSONString: JSON.stringify(this.$data.form) }, {
               headers: {
                 'content-type': 'application/json'
               }
